@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-contract Counter {
-    uint256 public number;
+import "./FreeGasReceiver.sol";
 
-    function setNumber(uint256 newNumber) public {
-        number = newNumber;
+contract Counter is FeeGasReceiver {
+    address caller;
+
+    constructor(address proxy) {
+        __FreeGas_init(proxy);
     }
 
-    function increment() public {
-        number++;
+    function takePlace() external {
+        caller = _caller();
     }
 }
