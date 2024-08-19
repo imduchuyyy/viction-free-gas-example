@@ -32,13 +32,18 @@ contract FeeGasProxy {
         return _balances[user];
     }
 
-
+    /**
+     * @notice Make a call to the target contract
+     */
     function call(address target, bytes memory data) external payable {
         bytes memory callData = abi.encodePacked(data, msg.sender);
         (bool success, ) = target.call{value: msg.value}(callData);
         require(success, "Proxy: external call failed");
     }
 
+    /**
+     * @notice Make multiple calls to the target contracts
+     */
     function multiCall(address[] memory targets, uint256[] memory values, bytes[] memory data) external payable {
         require(targets.length == data.length, "Proxy: invalid input");
         for (uint256 i = 0; i < targets.length; i++) {
